@@ -1,8 +1,9 @@
 ﻿namespace Raisin.AbsCom.Rpc
 {
     using System.Collections.Generic;
-    using System.IO.Pipelines;
     using System.Threading.Tasks;
+
+    using Raisin.AbsBuff;
 
     /// <summary>
     /// 用于读取 Request 或 Response 中的带有 key 的一段数据
@@ -10,7 +11,7 @@
     public readonly struct SegmentRead
     {
         public string Key { get; init; }
-        public PipeReader Reader { get; init; }
+        public IBuffRead<byte> Reader { get; init; }
     }
 
     /// <summary>
@@ -19,7 +20,7 @@
     public readonly struct SegmentWrite
     {
         public string Key { get; init; }
-        public PipeWriter Writer { get; init; }
+        public IBuffWrite<byte> Writer { get; init; }
     }
 
     public readonly struct NoSegments: IAsyncEnumerable<SegmentRead>, IAsyncEnumerable<SegmentWrite>

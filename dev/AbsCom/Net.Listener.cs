@@ -1,41 +1,29 @@
 ﻿namespace Raisin.AbsCom.Net
 {
-    public interface IIncomingAsync: IHasTryGetFn<IDescriptor>
-    { }
+    using System.Threading;
 
-    public interface IIncomingAsync<TDescriptor>: IIncomingAsync, ITryGet<TDescriptor>
-        where TDescriptor: struct , IDescriptor
-    { }
-
-    public interface IAcceptAsync: IHasTryGetFn<IChannel>
-    { }
-
-    public interface IAcceptAsync<TChannel>: IAcceptAsync, ITryGet<TChannel>
-    { }
-
-    public interface IRejectAsync
-    { }
+    using Cysharp.Threading.Tasks;
 
     public interface IDescriptor
     { }
 
     public interface IListener
     {
-        public IAcceptAsync Accept(IDescriptor descriptor);
+        public UniTask<IDescriptor> Incoming(CancellationToken token = default);
 
-        public IRejectAsync Reject(IDescriptor descriptor);
+        public UniTask<IChannel> Accept(IDescriptor descriptor, CancellationToken token = default);
+
+        public UniTask Reject(IDescriptor descriptor, CancellationToken token = default);
     }
 
-    public interface IListener<TDescriptor, TIncomingAsync, TAcceptAsync, TRejectAsync>: IListener
-        where TDescriptor : struct, IDescriptor
-        where TIncomingAsync: struct, IIncomingAsync
-        where TAcceptAsync : struct, IAcceptAsync
-        where TRejectAsync : struct, IRejectAsync
+    public interface IListener<TDescriptor, TChannel>: IListener
+        where TDescriptor: struct, IDescriptor
+        where TChannel: struct, IChannel
     {
-        public TIncomingAsync Incoming();
+        public new UniTask<TDescriptor> Incoming(CancellationToken token = default);
 
-        public TAcceptAsync Accept(in TDescriptor descriptor);
+        public UniTask<TChannel> Accept(in TDescriptor descriptor, CancellationToken token = default);
 
-        public TRejectAsync Reject(in TDescriptor descriptor);
+        public UniTask Reject(in TDescriptor descriptor, CancellationToken token = default);
     }
 }

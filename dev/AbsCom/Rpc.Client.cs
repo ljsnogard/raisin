@@ -3,10 +3,9 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using static Raisin.AbsCom.ITryGetExtensions;
+    using Cysharp.Threading.Tasks;
 
     public interface IClient<TReqAsync, TResponse>
-        where TReqAsync : IRequestAsync<TResponse>
         where TResponse : IResponse
     {
         /// <summary>
@@ -16,28 +15,25 @@
         /// <param name="command">所请求执行的程序的 Uri</param>
         /// <param name="parameters">执行程序所需的参数</param>
         /// <returns></returns>
-        public TReqAsync Request<P>(Uri command, P parameters)
+        public UniTask<TResponse> Request<P>(Uri command, P parameters)
             where P : IAsyncEnumerable<SegmentRead>;
     }
 
+    /// <summary>
+    /// C# 13 preview is suggested for using ref struct in async method.
+    /// </summary>
     static class Demo
     {
         static async Task ClientDemo<TClient, TReqAsync, TResponse>(TClient client)
             where TClient: IClient<TReqAsync, TResponse>
-            where TReqAsync: struct, IRequestAsync<TResponse>, IHasReadyEvent<TReqAsync>
             where TResponse: IResponse
         {
-            var response = await client
-                .Request(new Uri("/"), new NoSegments())
-                .IntoValueTask<TReqAsync, TResponse>();
-            if (response.Status.IsOk())
+            var response = await client.Request(new Uri("/"), new NoSegments());
+            await foreach (var seg in response.Segments)
             {
-
-            }
-            switch (response.Status)
-            {
-                case ResponseStatus.Ok: break;
-                default: break;
+                var key = seg.Key;
+                var slice = await seg.Reader.ReadAsync(1);
+                var span = slice.AsReadOnlySpan();
             }
         }
     }

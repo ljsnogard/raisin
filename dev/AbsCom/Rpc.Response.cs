@@ -11,13 +11,7 @@
     {
         public ResponseStatus Status { get; }
 
-        public IAsyncEnumerable<SegmentRead> GetAsyncEnumerableSegments();
-    }
-
-    public interface IResponse<S>: IResponse
-        where S: IAsyncEnumerable<SegmentRead>
-    {
-        public S Segments { get; }
+        public IAsyncEnumerable<SegmentRead> Segments { get; }
     }
 
     public static class ResponseStatusExtensions

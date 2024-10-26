@@ -1,5 +1,7 @@
 ﻿namespace Raisin.AbsCom.Net
 {
+    using Raisin.AbsAsync;
+
     public readonly struct GateId
     {
         public readonly uint Code;
