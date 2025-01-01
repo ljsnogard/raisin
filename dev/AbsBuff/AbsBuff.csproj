@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="DotNext" Version="5.14.0" />
+    <PackageReference Include="OneOf" Version="3.0.271" />
     <PackageReference Include="UniTask" Version="2.5.10" />
   </ItemGroup>
 

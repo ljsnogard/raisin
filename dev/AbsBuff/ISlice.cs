@@ -6,59 +6,36 @@
     }
 
     public interface ISliceRef<TDat>: ISlice<TDat>
-    {
-        public ReadOnlySpan<TDat> AsReadOnlySpan();
-    }
+    { }
 
-    public interface ISliceRef<TDat, TSub>: ISliceRef<TDat>
+    public interface ISliceRef<TDat, out TSub>: ISliceRef<TDat>
         where TSub: struct, ISliceRef<TDat, TSub>
     {
         public TSub SubSliceRef(uint offset, uint length);
     }
 
     public interface ISliceMut<TDat>: ISlice<TDat>
-    {
-        public Span<TDat> AsSpan();
-    }
+    { }
 
-    public interface ISliceMut<TDat, TSub>: ISliceMut<TDat>
+    public interface ISliceMut<TDat, out TSub>: ISliceMut<TDat>
         where TSub: struct, ISliceMut<TDat, TSub>
     {
         public TSub SubSliceMut(uint offset, uint length);
     }
 
-    public readonly struct EmptyBuff<T>: ISliceRef<T, EmptyBuff<T>>, ISliceMut<T, EmptyBuff<T>>
+    public readonly struct EmptyArray<T>: ISliceRef<T, EmptyArray<T>>, ISliceMut<T, EmptyArray<T>>
     {
+        public static readonly EmptyArray<T> Instance = new EmptyArray<T>();
+
         public uint Length
             => 0;
 
-        public ref readonly T RefAt(uint index)
+        public EmptyArray<T> SubSliceRef(uint offset, uint length)
             => throw new IndexOutOfRangeException();
 
-        public ref T MutAt(uint index)
+        public EmptyArray<T> SubSliceMut(uint offset, uint length)
             => throw new IndexOutOfRangeException();
 
-        public ReadOnlySpan<T> AsReadOnlySpan()
-            => new ReadOnlySpan<T>(Array.Empty<T>());
-
-        public Span<T> AsSpan()
-            => new Span<T>(Array.Empty<T>());
-
-        public EmptyBuff<T> SubSliceRef(uint offset, uint length)
-            => EmptyBuff<T>.SubSlice_(in this, offset, length);
-
-        public EmptyBuff<T> SubSliceMut(uint offset, uint length)
-            => EmptyBuff<T>.SubSlice_(in this, offset, length);
-
-        public void Dispose()
-        { }
-
-        private static EmptyBuff<T> SubSlice_(in EmptyBuff<T> arr, uint offset, uint length)
-        {
-            if (offset == 0 && length == 0)
-                return arr;
-            else
-                throw new IndexOutOfRangeException();
-        }
+        public void Dispose() {}
     }
 }

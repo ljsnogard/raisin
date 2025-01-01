@@ -1,17 +1,21 @@
 ﻿namespace Raisin.AbsCom.Rpc
 {
+    using Raisin.AbsBuff;
+
     using System.Collections.Generic;
 
-    public enum ResponseStatus
+    public readonly struct ResponseStatus(ushort code)
     {
-        Ok = 200,
+        public readonly ushort Code = code;
     }
 
     public interface IResponse
     {
         public ResponseStatus Status { get; }
 
-        public IAsyncEnumerable<SegmentRead> Segments { get; }
+        public IAsyncEnumerable<HeaderRead> Headers { get; }
+
+        public IBuffRead<byte> Payload { get; }
     }
 
     public static class ResponseStatusExtensions

@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbsCom", "AbsCom\AbsCom.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbsBuff", "AbsBuff\AbsBuff.csproj", "{CA8F0AAD-ADE7-49CF-B1AE-FF51F7777868}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbsAsync", "AbsAsync\AbsAsync.csproj", "{2E4E78D7-C755-4AB4-8B04-C3EDCBF80756}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{CA8F0AAD-ADE7-49CF-B1AE-FF51F7777868}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA8F0AAD-ADE7-49CF-B1AE-FF51F7777868}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA8F0AAD-ADE7-49CF-B1AE-FF51F7777868}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E4E78D7-C755-4AB4-8B04-C3EDCBF80756}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E4E78D7-C755-4AB4-8B04-C3EDCBF80756}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E4E78D7-C755-4AB4-8B04-C3EDCBF80756}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E4E78D7-C755-4AB4-8B04-C3EDCBF80756}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

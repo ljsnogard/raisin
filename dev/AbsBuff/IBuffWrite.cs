@@ -3,17 +3,21 @@
     using System.Threading;
 
     using Cysharp.Threading.Tasks;
+    
+    using OneOf;
 
-    public interface IBuffWrite<TData>
+    public interface IBuffWriteError
+    { }
+
+    public interface IBuffWrite<TDat>
     {
-        public bool CanWrite { get; }
-
-        public UniTask<ISliceMut<TData>> WriteAsync(uint length, CancellationToken token = default);
+        public UniTask<OneOf<ISliceMut<TDat>, IBuffWriteError>> WriteAsync(uint length, CancellationToken token = default);
     }
 
-    public interface IBuffWrite<TSliceMut, TData>: IBuffWrite<TData>
-        where TSliceMut: struct, ISliceMut<TData, TSliceMut>
+    public interface IBuffWrite<TSliceMut, TDat, TErr>: IBuffWrite<TDat>
+        where TSliceMut: struct, ISliceMut<TDat, TSliceMut>
+        where TErr: struct, IBuffWriteError
     {
-        public new UniTask<TSliceMut> WriteAsync(uint length, CancellationToken token = default);
+        public new UniTask<OneOf<TSliceMut, TErr>> WriteAsync(uint length, CancellationToken token = default);
     }
 }

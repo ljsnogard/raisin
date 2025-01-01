@@ -8,7 +8,7 @@
     /// <summary>
     /// 用于读取 Request 或 Response 中的带有 key 的一段数据
     /// </summary>
-    public readonly struct SegmentRead
+    public readonly struct HeaderRead
     {
         public string Key { get; init; }
         public IBuffRead<byte> Reader { get; init; }
@@ -17,30 +17,30 @@
     /// <summary>
     /// 用于写入 Request 或 Response 中的带有 key 的一段数据
     /// </summary>
-    public readonly struct SegmentWrite
+    public readonly struct HeaderWrite
     {
         public string Key { get; init; }
         public IBuffWrite<byte> Writer { get; init; }
     }
 
-    public readonly struct NoSegments: IAsyncEnumerable<SegmentRead>, IAsyncEnumerable<SegmentWrite>
+    public readonly struct NoHeaders: IAsyncEnumerable<HeaderRead>, IAsyncEnumerable<HeaderWrite>
     {
-        IAsyncEnumerator<SegmentRead> IAsyncEnumerable<SegmentRead>.GetAsyncEnumerator(CancellationToken token)
+        IAsyncEnumerator<HeaderRead> IAsyncEnumerable<HeaderRead>.GetAsyncEnumerator(CancellationToken token)
         {
             return GenAsyncEnumerable_().GetAsyncEnumerator(token);
 
-            static async IAsyncEnumerable<SegmentRead> GenAsyncEnumerable_()
+            static async IAsyncEnumerable<HeaderRead> GenAsyncEnumerable_()
             {
                 await Task.Yield();
                 yield break;
             }
         }
 
-        IAsyncEnumerator<SegmentWrite> IAsyncEnumerable<SegmentWrite>.GetAsyncEnumerator(CancellationToken token)
+        IAsyncEnumerator<HeaderWrite> IAsyncEnumerable<HeaderWrite>.GetAsyncEnumerator(CancellationToken token)
         {
             return GenAsyncEnumerable_().GetAsyncEnumerator(token);
 
-            static async IAsyncEnumerable<SegmentWrite> GenAsyncEnumerable_()
+            static async IAsyncEnumerable<HeaderWrite> GenAsyncEnumerable_()
             {
                 await Task.Yield();
                 yield break;
